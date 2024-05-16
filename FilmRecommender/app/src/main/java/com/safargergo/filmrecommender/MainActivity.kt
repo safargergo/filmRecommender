@@ -10,8 +10,11 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
+import androidx.navigation.NavHostController
 import com.safargergo.filmrecommender.ui.screens.FilmListScreen
+import com.safargergo.filmrecommender.navigation.NavGraph
 import com.safargergo.filmrecommender.ui.theme.FilmRecommenderTheme
+import com.safargergo.filmrecommender.viewmodel.FilmViewModel
 
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -19,12 +22,13 @@ class MainActivity : ComponentActivity() {
         setContent {
             FilmRecommenderTheme {
                 // A surface container using the 'background' color from the theme
-                Surface(
+                /*Surface(
                     modifier = Modifier.fillMaxSize(),
                     color = MaterialTheme.colorScheme.background
                 ) {
                     FilmListScreen()
-                }
+                }*/
+                NavGraph()
             }
         }
     }

@@ -89,4 +89,7 @@ dependencies {
     implementation("androidx.room:room-runtime:$room_version")
     kapt("androidx.room:room-compiler:$room_version")
     implementation("androidx.room:room-ktx:$room_version")
+
+    // Navigation
+    implementation ("androidx.navigation:navigation-compose:2.4.0-alpha10")
 }

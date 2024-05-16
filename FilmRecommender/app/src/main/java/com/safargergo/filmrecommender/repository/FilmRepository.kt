@@ -16,7 +16,7 @@ class FilmRepository(private val favoriteFilmDao: FavoriteFilmDao) {
     }
 
     suspend fun removeFavorite(filmId: Int) {
-        //return favoriteFilmDao.deleteById(filmId)
+        return favoriteFilmDao.deleteById(filmId)
     }
 
     fun getFavorites(): Flow<List<FavoriteFilm>> {

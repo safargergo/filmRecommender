@@ -1,12 +1,14 @@
 package com.safargergo.filmrecommender.ui.screens
 
-import android.annotation.SuppressLint
+import androidx.compose.foundation.Image
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
+import androidx.compose.material.*
 import androidx.compose.material3.Divider
 import androidx.compose.material3.DrawerValue
-import androidx.compose.material3.ExperimentalMaterial3Api
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.ModalDrawerSheet
 import androidx.compose.material3.ModalNavigationDrawer
 import androidx.compose.material3.NavigationDrawerItem
@@ -17,28 +19,27 @@ import androidx.compose.material3.rememberDrawerState
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.rememberCoroutineScope
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.text.font.FontFamily
+import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import androidx.navigation.compose.rememberNavController
-import com.safargergo.filmrecommender.FilmApplication
+import androidx.lifecycle.viewmodel.compose.viewModel
+import coil.compose.rememberImagePainter
 import com.safargergo.filmrecommender.models.FavoriteFilm
-import com.safargergo.filmrecommender.ui.components.FilmItem
 import com.safargergo.filmrecommender.ui.components.MyBottomBar
 import com.safargergo.filmrecommender.ui.components.MyTopAppBar
 import com.safargergo.filmrecommender.viewmodel.FilmViewModel
 import kotlinx.coroutines.launch
 
-@SuppressLint("UnusedMaterial3ScaffoldPaddingParameter")
-@OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun FilmListScreen(
-    viewModel: FilmViewModel = FilmViewModel(FilmApplication()),
+fun FavoritesScreen(
+    viewModel: FilmViewModel = viewModel(),
     onHomeNavigateClick: () -> Unit,
     onFavNavigateClick: () -> Unit
 ) {
-    val films = viewModel.films.collectAsState().value
     val favorites = viewModel.favorites.collectAsState().value
 
     val drawerState = rememberDrawerState(DrawerValue.Closed)
@@ -77,7 +78,7 @@ fun FilmListScreen(
                     onNavIconClick = {
                         scope.launch { drawerState.open() }
                     },
-                    title = "Home"
+                    title = "Favorites"
                 )
             },
             topBar = {
@@ -88,25 +89,8 @@ fun FilmListScreen(
                 modifier = Modifier.padding(top = it.calculateTopPadding())
             ) {
                 LazyColumn {
-                    items(films) { film ->
-                        FilmItem(
-                            film = film,
-                            isFavorite = favorites.any { it.id == film.id },
-                            onFavoriteClick = { isFavorite ->
-                                if (isFavorite) {
-                                    viewModel.addFavorite(
-                                        FavoriteFilm(
-                                            film.id,
-                                            film.title,
-                                            film.overview,
-                                            film.poster_path
-                                        )
-                                    )
-                                } else {
-                                    viewModel.removeFavorite(film.id)
-                                }
-                            }
-                        )
+                    items(favorites) { film ->
+                        FavoriteFilmItem(film)
                     }
                 }
             }
@@ -114,3 +98,39 @@ fun FilmListScreen(
     }
 }
 
+@Composable
+fun FavoriteFilmItem(film: FavoriteFilm) {
+    Row(
+        modifier = Modifier
+            .fillMaxWidth()
+            .padding(8.dp)
+            .clickable { }
+    ) {
+        Image(
+            painter = rememberImagePainter("https://image.tmdb.org/t/p/w500${film.poster_path}"),
+            contentDescription = null,
+            modifier = Modifier
+                .size(100.dp)
+                .align(Alignment.CenterVertically),
+            contentScale = ContentScale.Crop
+        )
+        Spacer(modifier = Modifier.width(8.dp))
+        Column(
+            modifier = Modifier
+                .weight(1f)
+                .align(Alignment.CenterVertically)
+        ) {
+            Text(
+                text = film.title,
+                style = MaterialTheme.typography.titleLarge,
+                textAlign = TextAlign.Start
+            )
+            Text(
+                text = film.overview,
+                style = MaterialTheme.typography.bodyMedium,
+                maxLines = 3,
+                textAlign = TextAlign.Start
+            )
+        }
+    }
+}
