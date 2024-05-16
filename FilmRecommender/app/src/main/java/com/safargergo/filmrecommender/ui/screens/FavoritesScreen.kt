@@ -60,7 +60,7 @@ fun FavoritesScreen(
                 Divider()
                 NavigationDrawerItem(
                     label = { Text(text = "Home") },
-                    selected = true,
+                    selected = false,
                     onClick = onHomeNavigateClick
                 )
                 NavigationDrawerItem(

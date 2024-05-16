@@ -20,8 +20,8 @@ fun NavGraph(
                 FilmViewModel(FilmApplication()),
                 onHomeNavigateClick = {},
                 onFavNavigateClick = {
-                    navController.navigate("favorites")
                     navController.popBackStack()
+                    navController.navigate("favorites")
                 }
             )
         }
@@ -29,8 +29,8 @@ fun NavGraph(
             FavoritesScreen(
                 FilmViewModel(FilmApplication()),
                 onHomeNavigateClick = {
-                    navController.navigate("home")
                     navController.popBackStack()
+                    navController.navigate("home")
                 },
                 onFavNavigateClick = {}
             )
