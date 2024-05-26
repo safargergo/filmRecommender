@@ -21,6 +21,10 @@ android {
         vectorDrawables {
             useSupportLibrary = true
         }
+
+        /*resValue ("String", "geminiApiKey",
+            (findProperty("geminiApiKey") ?: "\"GEMINI_API_KEY_NOT_FOUND_IN_GRADLE_PROPERTIES\"") as String
+        )*/
     }
 
     buildTypes {
@@ -41,6 +45,7 @@ android {
     }
     buildFeatures {
         compose = true
+        buildConfig = true
     }
     composeOptions {
         kotlinCompilerExtensionVersion = "1.5.3"
@@ -92,4 +97,8 @@ dependencies {
 
     // Navigation
     implementation ("androidx.navigation:navigation-compose:2.4.0-alpha10")
+
+    // add the dependency for the Google AI client SDK for Android
+    implementation("com.google.ai.client.generativeai:generativeai:0.6.0")
+
 }

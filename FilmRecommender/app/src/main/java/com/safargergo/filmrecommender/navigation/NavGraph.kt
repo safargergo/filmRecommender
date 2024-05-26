@@ -52,8 +52,28 @@ fun NavGraph(
             //Log.d("Arguments", arguments)
             it.arguments?.getInt("id")?.let { it1 ->
                 FilmDetailsScreen(
-                    viewModel = FilmDetailsViewModel(FilmApplication(), it1),
+                    viewModel = FilmDetailsViewModel(FilmApplication(), it1, true),
                     id = it1,
+                    onRecommendationClick = { recommendationID ->
+                        navController.navigate("filmDetails/${it1}/${recommendationID}")
+                    }
+                )
+            }
+        }
+
+        composable(
+            route = "filmDetails/{id}/{recommendationID}",
+            arguments = listOf(navArgument("id") {
+                type = NavType.IntType
+            }, navArgument("recommendationID") {
+                type = NavType.IntType
+            }),
+        ) {
+            it.arguments?.getInt("recommendationID")?.let { it1 ->
+                FilmDetailsScreen(
+                    viewModel = FilmDetailsViewModel(FilmApplication(), it1, false),
+                    id = it1,
+                    onRecommendationClick = {}
                 )
             }
         }
