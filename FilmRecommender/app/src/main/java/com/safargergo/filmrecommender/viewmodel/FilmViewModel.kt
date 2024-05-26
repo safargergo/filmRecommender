@@ -17,6 +17,11 @@ class FilmViewModel(application: Application) : AndroidViewModel(application) {
     val films: StateFlow<List<Film>> get() = _films
     private val _favorites = MutableStateFlow<List<FavoriteFilm>>(emptyList())
     val favorites: StateFlow<List<FavoriteFilm>> get() = _favorites
+    private val _selected = MutableStateFlow<Film?>(null)
+    val selected: StateFlow<Film?> get() = _selected
+
+    // Replace with your TMDB API Key
+    private val _apiKey = "a24f6366d21c5ae9945d1b07179ba511"
 
     init {
         val favoriteFilmDao = FilmDatabase.getDatabase(application).favoriteFilmDao()
@@ -27,8 +32,7 @@ class FilmViewModel(application: Application) : AndroidViewModel(application) {
 
     private fun fetchFilms() {
         viewModelScope.launch {
-            val apiKey = "a24f6366d21c5ae9945d1b07179ba511" // Replace with your TMDB API Key
-            val response = repository.getPopularMovies(apiKey, 1)
+            val response = repository.getPopularMovies(_apiKey, 1)
             _films.value = response.results
         }
     }

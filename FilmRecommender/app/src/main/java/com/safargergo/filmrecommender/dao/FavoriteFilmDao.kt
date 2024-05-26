@@ -17,4 +17,7 @@ interface FavoriteFilmDao {
 
     @Query("SELECT * FROM favorite_films")
     fun getAllFavorites(): Flow<List<FavoriteFilm>>
+
+    @Query("SELECT * FROM favorite_films WHERE id = :filmId")
+    fun getFavoriteById(filmId: Int): Flow<FavoriteFilm>
 }

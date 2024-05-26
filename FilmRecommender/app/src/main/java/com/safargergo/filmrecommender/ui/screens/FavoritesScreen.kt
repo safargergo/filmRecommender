@@ -1,11 +1,13 @@
 package com.safargergo.filmrecommender.ui.screens
 
+import android.util.Log
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.material.*
+import androidx.compose.material3.Button
 import androidx.compose.material3.Divider
 import androidx.compose.material3.DrawerValue
 import androidx.compose.material3.MaterialTheme
@@ -27,8 +29,10 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.lifecycle.viewmodel.compose.viewModel
+import coil.annotation.ExperimentalCoilApi
 import coil.compose.rememberImagePainter
 import com.safargergo.filmrecommender.models.FavoriteFilm
+import com.safargergo.filmrecommender.models.Film
 import com.safargergo.filmrecommender.ui.components.MyBottomBar
 import com.safargergo.filmrecommender.ui.components.MyTopAppBar
 import com.safargergo.filmrecommender.viewmodel.FilmViewModel
@@ -38,7 +42,8 @@ import kotlinx.coroutines.launch
 fun FavoritesScreen(
     viewModel: FilmViewModel = viewModel(),
     onHomeNavigateClick: () -> Unit,
-    onFavNavigateClick: () -> Unit
+    onFavNavigateClick: () -> Unit,
+    onDetailsClick: (FavoriteFilm) -> Unit
 ) {
     val favorites = viewModel.favorites.collectAsState().value
 
@@ -90,7 +95,14 @@ fun FavoritesScreen(
             ) {
                 LazyColumn {
                     items(favorites) { film ->
-                        FavoriteFilmItem(film)
+                        Button(
+                            onClick = {
+                                onDetailsClick(film)
+                                Log.d("asd", "Asd meghívódik2")
+                            }
+                        ) {
+                            FavoriteFilmItem(film)
+                        }
                     }
                 }
             }
@@ -98,6 +110,7 @@ fun FavoritesScreen(
     }
 }
 
+@OptIn(ExperimentalCoilApi::class)
 @Composable
 fun FavoriteFilmItem(film: FavoriteFilm) {
     Row(
@@ -112,7 +125,7 @@ fun FavoriteFilmItem(film: FavoriteFilm) {
             modifier = Modifier
                 .size(100.dp)
                 .align(Alignment.CenterVertically),
-            contentScale = ContentScale.Crop
+            contentScale = ContentScale.Crop,
         )
         Spacer(modifier = Modifier.width(8.dp))
         Column(
